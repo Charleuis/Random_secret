@@ -10,9 +10,15 @@ const PORT = 3000;
 app.use(express.static("public"));
 
 app.get("/", async (req, res) => {
-  const response = await axios.get("https://secrets-api.appbrewery.com/random");
-  const result = response.data;
-  res.render("index.ejs", { secret: result.secret, user: result.username });
+    try {
+        
+        const response = await axios.get("https://secrets-api.appbrewery.com/random");
+        const result = response.data;
+        res.render("index.ejs", { secret: result.secret, user: result.username });
+    } catch (error) {
+        console.log(error.response.data);
+        res.status(500)
+    }
 });
 app.listen(PORT, () => [console.log(`Server started on ${PORT}`)]);
 
